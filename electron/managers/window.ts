@@ -5,7 +5,7 @@ import { BrowserWindow } from 'electron'
  */
 class WindowManager {
   public mainWindow?: BrowserWindow
-  private _quickAskWindow: BrowserWindow | undefined = undefined
+  public _quickAskWindow: BrowserWindow | undefined = undefined
   private _quickAskWindowVisible = false
   private _mainWindowVisible = false
 
@@ -68,11 +68,11 @@ class WindowManager {
       transparent: true,
       frame: false,
       type: 'panel',
-      resizable: false,
+      // resizable: false,
       webPreferences: {
         nodeIntegration: true,
         preload: preloadPath,
-        contextIsolation: true,
+        webSecurity: false,
       },
     })
 

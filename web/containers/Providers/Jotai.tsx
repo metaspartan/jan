@@ -14,6 +14,8 @@ export const fileUploadAtom = atom<FileInfo[]>([])
 export const appDownloadProgress = atom<number>(-1)
 export const searchAtom = atom<string>('')
 
+export const selectedTextAtom = atom('')
+
 export default function JotaiWrapper({ children }: Props) {
   return <Provider>{children}</Provider>
 }

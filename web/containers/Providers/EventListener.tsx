@@ -8,6 +8,7 @@ import { useSetAtom } from 'jotai'
 import { setDownloadStateAtom } from '@/hooks/useDownloadState'
 
 import AppUpdateListener from './AppUpdateListener'
+import ClipboardListener from './ClipboardListener'
 import EventHandler from './EventHandler'
 
 import ModelImportListener from './ModelImportListener'
@@ -56,11 +57,13 @@ const EventListenerWrapper = ({ children }: PropsWithChildren) => {
 
   return (
     <AppUpdateListener>
-      <ModelImportListener>
-        <QuickAskListener>
-          <EventHandler>{children}</EventHandler>
-        </QuickAskListener>
-      </ModelImportListener>
+      <ClipboardListener>
+        <ModelImportListener>
+          <QuickAskListener>
+            <EventHandler>{children}</EventHandler>
+          </QuickAskListener>
+        </ModelImportListener>
+      </ClipboardListener>
     </AppUpdateListener>
   )
 }

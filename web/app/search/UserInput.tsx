@@ -2,14 +2,17 @@ import React, { useState, useRef, useEffect } from 'react'
 
 import { Button } from '@janhq/uikit'
 
+import { useAtomValue } from 'jotai'
 import { Send } from 'lucide-react'
 
 import LogoMark from '@/containers/Brand/Logo/Mark'
+import { selectedTextAtom } from '@/containers/Providers/Jotai'
 
 const UserInput: React.FC = () => {
   const [inputValue, setInputValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
+  const selectedText = useAtomValue(selectedTextAtom)
 
   useEffect(() => {
     if (inputRef.current) {
@@ -23,7 +26,7 @@ const UserInput: React.FC = () => {
     }
 
     const handleClickOutside = (event: MouseEvent) => {
-      console.log(`NamH - handleClickOutside - event: `, event)
+      // console.log(`NamH - handleClickOutside - event: `, event)
       // TODO: FIX this, not working for now
       // if (formRef.current && !formRef.current.contains(event.target)) {
       // window.core?.api?.minimizeQuickAsk()
@@ -76,27 +79,32 @@ const UserInput: React.FC = () => {
     }
   }
 
+  const displaySelectedText = selectedText.length > 0
+
   return (
-    <form
-      ref={formRef}
-      className="flex h-full w-full items-center justify-center px-4"
-      onSubmit={onSubmit}
-    >
-      <div className="flex h-full w-full items-center gap-4">
-        <LogoMark width={28} height={28} className="mx-auto" />
-        <input
-          ref={inputRef}
-          className="flex-1 font-bold focus:outline-none"
-          type="text"
-          value={inputValue}
-          onChange={handleChange}
-          placeholder="Ask me anything"
-        />
-        <Button type="submit">
-          <Send size={16} />
-        </Button>
-      </div>
-    </form>
+    <>
+      <form
+        ref={formRef}
+        className="flex h-full w-full items-center justify-center px-4"
+        onSubmit={onSubmit}
+      >
+        <div className="flex h-full w-full items-center gap-4">
+          <LogoMark width={28} height={28} className="mx-auto" />
+          <input
+            ref={inputRef}
+            className="flex-1 font-bold focus:outline-none"
+            type="text"
+            value={inputValue}
+            onChange={handleChange}
+            placeholder="Ask me anything"
+          />
+          <Button type="submit">
+            <Send size={16} />
+          </Button>
+        </div>
+      </form>
+      {displaySelectedText && <div>{displaySelectedText}</div>}
+    </>
   )
 }
 

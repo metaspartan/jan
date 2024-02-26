@@ -42,6 +42,7 @@ export enum AppEvent {
   onAppUpdateDownloadSuccess = 'onAppUpdateDownloadSuccess',
 
   onUserSubmitQuickAsk = 'onUserSubmitQuickAsk',
+  onSelectedText = 'onSelectedText',
 }
 
 export enum DownloadRoute {

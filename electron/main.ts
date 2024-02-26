@@ -26,6 +26,9 @@ import { setupCore } from './utils/setup'
 import { setupReactDevTool } from './utils/dev'
 import { cleanLogs } from './utils/log'
 
+import { registerShortcut } from 'electron-selected-text'
+import { AppEvent } from '@janhq/core'
+
 app
   .whenReady()
   .then(setupReactDevTool)
@@ -62,7 +65,7 @@ app.once('quit', () => {
 function createQuickAskWindow() {
   const preloadPath = join(__dirname, 'preload.js')
   const startUrl = app.isPackaged
-    ? `file://${join(__dirname, '..', 'renderer', 'index.html')}`
+    ? `file://${join(__dirname, '..', 'renderer', 'search.html')}`
     : 'http://localhost:3000/search'
 
   windowManager.createQuickAskWindow(preloadPath, startUrl)
@@ -98,10 +101,19 @@ function createMainWindow() {
 }
 
 function registerGlobalShortcuts() {
-  const ret = globalShortcut.register('Ctrl+Space', () => {
+  const ret = globalShortcut.register('CommandOrControl+J', () => {
+    // const ret = registerShortcut('CommandOrControl+J', (selectedText: string) => {
+    const selectedText = 'ahihihi'
+
     if (!windowManager.isQuickAskWindowVisible()) {
       windowManager.minimizeMainWindow()
       windowManager.showQuickAskWindow()
+      windowManager.mainWindow?.webContents.send(
+        AppEvent.onSelectedText,
+        selectedText
+      )
+
+      log(`NamH Selected Text: ${selectedText}`)
     } else {
       windowManager.minimizeQuickAskWindow()
     }
