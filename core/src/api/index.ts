@@ -11,7 +11,10 @@ export enum NativeRoute {
   relaunch = 'relaunch',
 
   minimizeQuickAsk = 'minimizeQuickAsk',
-  sendQuickAskInput = 'sendQuickAskInput'
+  sendQuickAskInput = 'sendQuickAskInput',
+
+  minimizeMainWindow = 'minimizeMainWindow',
+  showMainWindow = 'showMainWindow',
 }
 
 /**

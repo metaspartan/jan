@@ -66,6 +66,8 @@ const UserInput: React.FC = () => {
     if (inputValue.trim() !== '') {
       window.core?.api?.sendQuickAskInput(inputValue)
       setInputValue('')
+      window.core?.api?.minimizeQuickAsk()
+      window.core?.api?.showMainWindow()
     }
   }
 

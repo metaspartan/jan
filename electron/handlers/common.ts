@@ -14,7 +14,7 @@ export function injectHandler() {
   const handler = new RequestHandler(
     ipcWrapper,
     (channel: string, args: any) =>
-      windowManager.currentWindow?.webContents.send(channel, args)
+      windowManager.mainWindow?.webContents.send(channel, args)
   )
   handler.handle()
 }

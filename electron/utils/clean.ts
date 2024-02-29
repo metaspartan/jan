@@ -6,7 +6,7 @@ import { app } from 'electron'
 export function cleanUpAndQuit() {
   if (!ModuleManager.instance.cleaningResource) {
     ModuleManager.instance.cleaningResource = true
-    windowManager.currentWindow?.destroy()
+    windowManager.cleanUp()
     dispose(ModuleManager.instance.requiredModules)
     ModuleManager.instance.clearImportedModules()
     app.quit()

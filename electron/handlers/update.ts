@@ -25,7 +25,7 @@ export function handleAppUpdates() {
 
   /* App Update Completion Message */
   autoUpdater.on('update-downloaded', async (_info: UpdateDownloadedEvent) => {
-    windowManager.currentWindow?.webContents.send(
+    windowManager.mainWindow?.webContents.send(
       AppEvent.onAppUpdateDownloadSuccess,
       {}
     )
@@ -40,7 +40,7 @@ export function handleAppUpdates() {
 
   /* App Update Error */
   autoUpdater.on('error', (info: Error) => {
-    windowManager.currentWindow?.webContents.send(
+    windowManager.mainWindow?.webContents.send(
       AppEvent.onAppUpdateDownloadError,
       info
     )
@@ -49,7 +49,7 @@ export function handleAppUpdates() {
   /* App Update Progress */
   autoUpdater.on('download-progress', (progress: ProgressInfo) => {
     console.debug('app update progress: ', progress.percent)
-    windowManager.currentWindow?.webContents.send(
+    windowManager.mainWindow?.webContents.send(
       AppEvent.onAppUpdateDownloadUpdate,
       {
         ...progress,

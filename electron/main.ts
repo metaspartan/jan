@@ -70,7 +70,7 @@ app.once('quit', () => {
 
 function createMainWindow() {
   /* Create main window */
-  const mainWindow = windowManager.createWindow({
+  const mainWindow = windowManager.createMainWindow({
     webPreferences: {
       nodeIntegration: true,
       preload: join(__dirname, 'preload.js'),
@@ -84,8 +84,8 @@ function createMainWindow() {
 
   /* Load frontend app to the window */
   mainWindow.loadURL(startURL)
-
-  mainWindow.once('ready-to-show', () => mainWindow?.show())
+  windowManager.minimizeMainWindow()
+  // mainWindow.once('ready-to-show', () => mainWindow?.show())
   mainWindow.on('closed', () => {
     if (process.platform !== 'darwin') app.quit()
   })

@@ -62,12 +62,12 @@ export function handleAppIPCs() {
         // Path to install extension to
         extensionsPath: getJanExtensionsPath(),
       })
-      windowManager.currentWindow?.reload()
+      windowManager.mainWindow?.reload()
     }
   })
 
   ipcMain.handle(NativeRoute.selectDirectory, async () => {
-    const mainWindow = windowManager.currentWindow
+    const mainWindow = windowManager.mainWindow
     if (!mainWindow) {
       console.error('No main window found')
       return
@@ -85,7 +85,7 @@ export function handleAppIPCs() {
   })
 
   ipcMain.handle(NativeRoute.selectModelFiles, async () => {
-    const mainWindow = windowManager.currentWindow
+    const mainWindow = windowManager.mainWindow
     if (!mainWindow) {
       console.error('No main window found')
       return
@@ -110,10 +110,20 @@ export function handleAppIPCs() {
   ipcMain.handle(
     NativeRoute.sendQuickAskInput,
     async (_event, input: string): Promise<void> => {
-      windowManager.currentWindow?.webContents.send(
+      windowManager.mainWindow?.webContents.send(
         AppEvent.onUserSubmitQuickAsk,
         input
       )
     }
+  )
+
+  ipcMain.handle(
+    NativeRoute.minimizeMainWindow,
+    async (): Promise<void> => windowManager.minimizeMainWindow()
+  )
+
+  ipcMain.handle(
+    NativeRoute.showMainWindow,
+    async (): Promise<void> => windowManager.showMainWindow()
   )
 }

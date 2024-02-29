@@ -4,17 +4,18 @@ import { BrowserWindow } from 'electron'
  * Manages the current window instance.
  */
 class WindowManager {
-  public currentWindow?: BrowserWindow
+  public mainWindow?: BrowserWindow
   private _quickAskWindow: BrowserWindow | undefined = undefined
   private _quickAskWindowVisible = false
+  private _mainWindowVisible = false
 
   /**
    * Creates a new window instance.
    * @param {Electron.BrowserWindowConstructorOptions} options - The options to create the window with.
    * @returns The created window instance.
    */
-  createWindow(options?: Electron.BrowserWindowConstructorOptions | undefined) {
-    this.currentWindow = new BrowserWindow({
+  createMainWindow(options?: Electron.BrowserWindowConstructorOptions | undefined) {
+    this.mainWindow = new BrowserWindow({
       width: 1200,
       minWidth: 1200,
       height: 800,
@@ -27,7 +28,21 @@ class WindowManager {
       vibrancy: 'sidebar',
       ...options,
     })
-    return this.currentWindow
+    return this.mainWindow
+  }
+
+  isMainWindowVisible(): boolean {
+    return this._mainWindowVisible
+  }
+
+  minimizeMainWindow(): void {
+    this.mainWindow?.minimize()
+    this._mainWindowVisible = false
+  }
+
+  showMainWindow(): void {
+    this.mainWindow?.show()
+    this._mainWindowVisible = true
   }
 
   minimizeQuickAskWindow(): void {
@@ -61,6 +76,13 @@ class WindowManager {
 
     this._quickAskWindow.loadURL(startUrl)
     this.minimizeQuickAskWindow()
+  }
+
+  cleanUp(): void {
+    this.mainWindow?.destroy()
+    this._quickAskWindow?.destroy()
+    this._quickAskWindowVisible = false
+    this._mainWindowVisible = false
   }
 }
 
