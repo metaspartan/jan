@@ -1,9 +1,10 @@
-import { app, BrowserWindow, shell } from 'electron'
+import { app, BrowserWindow, globalShortcut, shell } from 'electron'
+
 import { join } from 'path'
 /**
  * Managers
  **/
-import { WindowManager } from './managers/window'
+import { windowManager } from './managers/window'
 import { log } from '@janhq/core/node'
 
 /**
@@ -35,6 +36,16 @@ app
   .then(setupMenu)
   .then(handleIPCs)
   .then(handleAppUpdates)
+  .then(() => {
+    // creating quick ask window
+    // TODO: move to another function
+    const preloadPath = join(__dirname, 'preload.js')
+    const startUrl = app.isPackaged
+      ? `file://${join(__dirname, '..', 'renderer', 'index.html')}`
+      : 'http://localhost:3000/search'
+
+    windowManager.createQuickAskWindow(preloadPath, startUrl)
+  })
   .then(createMainWindow)
   .then(() => {
     app.on('activate', () => {
@@ -44,6 +55,10 @@ app
     })
   })
   .then(() => cleanLogs())
+
+app.on('ready', () => {
+  registerGlobalShortcuts()
+})
 
 app.once('window-all-closed', () => {
   cleanUpAndQuit()
@@ -55,7 +70,7 @@ app.once('quit', () => {
 
 function createMainWindow() {
   /* Create main window */
-  const mainWindow = WindowManager.instance.createWindow({
+  const mainWindow = windowManager.createWindow({
     webPreferences: {
       nodeIntegration: true,
       preload: join(__dirname, 'preload.js'),
@@ -84,6 +99,22 @@ function createMainWindow() {
   /* Enable dev tools for development */
   if (!app.isPackaged) mainWindow.webContents.openDevTools()
   log(`Version: ${app.getVersion()}`)
+}
+
+const registerGlobalShortcuts = () => {
+  const ret = globalShortcut.register('Ctrl+Space', () => {
+    if (!windowManager.isQuickAskWindowVisible()) {
+      windowManager.showQuickAskWindow()
+    } else {
+      windowManager.minimizeQuickAskWindow()
+    }
+  })
+
+  if (!ret) {
+    console.error('Global shortcut registration failed')
+  } else {
+    console.log('Global shortcut registered successfully')
+  }
 }
 
 /**

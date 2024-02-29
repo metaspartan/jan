@@ -63,9 +63,8 @@ export default function useSendChatMessage() {
   const setEditPrompt = useSetAtom(editPromptAtom)
 
   const currentMessages = useAtomValue(getCurrentChatMessagesAtom)
-  const { activeModel } = useActiveModel()
   const selectedModel = useAtomValue(selectedModelAtom)
-  const { startModel } = useActiveModel()
+  const { activeModel, startModel } = useActiveModel()
   const setQueuedMessage = useSetAtom(queuedMessageAtom)
   const loadModelFailed = useAtomValue(loadModelErrorAtom)
 

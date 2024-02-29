@@ -3,15 +3,10 @@ import { BrowserWindow } from 'electron'
 /**
  * Manages the current window instance.
  */
-export class WindowManager {
-  public static instance: WindowManager = new WindowManager()
+class WindowManager {
   public currentWindow?: BrowserWindow
-
-  constructor() {
-    if (WindowManager.instance) {
-      return WindowManager.instance
-    }
-  }
+  private _quickAskWindow: BrowserWindow | undefined = undefined
+  private _quickAskWindowVisible = false
 
   /**
    * Creates a new window instance.
@@ -34,4 +29,39 @@ export class WindowManager {
     })
     return this.currentWindow
   }
+
+  minimizeQuickAskWindow(): void {
+    this._quickAskWindow?.minimize()
+    this._quickAskWindowVisible = false
+  }
+
+  showQuickAskWindow(): void {
+    this._quickAskWindow?.show()
+    this._quickAskWindowVisible = true
+  }
+
+  isQuickAskWindowVisible(): boolean {
+    return this._quickAskWindowVisible
+  }
+
+  createQuickAskWindow(preloadPath: string, startUrl: string): void {
+    this._quickAskWindow = new BrowserWindow({
+      width: 560,
+      height: 60,
+      transparent: true,
+      frame: false,
+      type: 'panel',
+      resizable: true,
+      webPreferences: {
+        nodeIntegration: true,
+        preload: preloadPath,
+        webSecurity: false,
+      },
+    })
+
+    this._quickAskWindow.loadURL(startUrl)
+    this.minimizeQuickAskWindow()
+  }
 }
+
+export const windowManager = new WindowManager()

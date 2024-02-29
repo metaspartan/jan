@@ -9,6 +9,9 @@ export enum NativeRoute {
   selectDirectory = 'selectDirectory',
   selectModelFiles = 'selectModelFiles',
   relaunch = 'relaunch',
+
+  minimizeQuickAsk = 'minimizeQuickAsk',
+  sendQuickAskInput = 'sendQuickAskInput'
 }
 
 /**
@@ -31,6 +34,8 @@ export enum AppEvent {
   onAppUpdateDownloadUpdate = 'onAppUpdateDownloadUpdate',
   onAppUpdateDownloadError = 'onAppUpdateDownloadError',
   onAppUpdateDownloadSuccess = 'onAppUpdateDownloadSuccess',
+
+  onUserSubmitQuickAsk = 'onUserSubmitQuickAsk',
 }
 
 export enum DownloadRoute {

@@ -11,6 +11,7 @@ import AppUpdateListener from './AppUpdateListener'
 import EventHandler from './EventHandler'
 
 import ModelImportListener from './ModelImportListener'
+import QuickAskListener from './QuickAskListener'
 
 const EventListenerWrapper = ({ children }: PropsWithChildren) => {
   const setDownloadState = useSetAtom(setDownloadStateAtom)
@@ -56,7 +57,9 @@ const EventListenerWrapper = ({ children }: PropsWithChildren) => {
   return (
     <AppUpdateListener>
       <ModelImportListener>
-        <EventHandler>{children}</EventHandler>
+        <QuickAskListener>
+          <EventHandler>{children}</EventHandler>
+        </QuickAskListener>
       </ModelImportListener>
     </AppUpdateListener>
   )

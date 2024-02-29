@@ -141,3 +141,7 @@ export type ModelRuntimeParams = {
   presence_penalty?: number
   engine?: string
 }
+
+export type ModelInitFailed = Model & {
+  error: Error
+}
