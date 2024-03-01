@@ -25,20 +25,10 @@ const UserInput: React.FC = () => {
       }
     }
 
-    const handleClickOutside = (event: MouseEvent) => {
-      // console.log(`NamH - handleClickOutside - event: `, event)
-      // TODO: FIX this, not working for now
-      // if (formRef.current && !formRef.current.contains(event.target)) {
-      // window.core?.api?.minimizeQuickAsk()
-      // }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
     document.addEventListener('keydown', onKeyDown)
 
     return () => {
       document.removeEventListener('keydown', onKeyDown)
-      document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
 
@@ -72,14 +62,12 @@ const UserInput: React.FC = () => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (inputValue.trim() !== '') {
-      window.core?.api?.sendQuickAskInput(inputValue)
+      window.core?.api?.sendQuickAskInput(`${inputValue} ${selectedText}`)
       setInputValue('')
       window.core?.api?.minimizeQuickAsk()
       window.core?.api?.showMainWindow()
     }
   }
-
-  const displaySelectedText = selectedText.length > 0
 
   return (
     <>
@@ -103,7 +91,6 @@ const UserInput: React.FC = () => {
           </Button>
         </div>
       </form>
-      {displaySelectedText && <div>{displaySelectedText}</div>}
     </>
   )
 }

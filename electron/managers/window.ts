@@ -38,7 +38,7 @@ class WindowManager {
   }
 
   minimizeMainWindow(): void {
-    this.mainWindow?.minimize()
+    this.mainWindow?.hide()
     this._mainWindowVisible = false
   }
 
@@ -48,7 +48,7 @@ class WindowManager {
   }
 
   minimizeQuickAskWindow(): void {
-    this._quickAskWindow?.minimize()
+    this._quickAskWindow?.hide()
     this._quickAskWindowVisible = false
   }
 
@@ -68,7 +68,7 @@ class WindowManager {
       transparent: true,
       frame: false,
       type: 'panel',
-      // resizable: false,
+      resizable: false,
       webPreferences: {
         nodeIntegration: true,
         preload: preloadPath,

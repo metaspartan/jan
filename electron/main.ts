@@ -1,4 +1,4 @@
-import { app, BrowserWindow, globalShortcut, shell } from 'electron'
+import { app, BrowserWindow, shell } from 'electron'
 
 import { join } from 'path'
 /**
@@ -101,19 +101,14 @@ function createMainWindow() {
 }
 
 function registerGlobalShortcuts() {
-  const ret = globalShortcut.register('CommandOrControl+J', () => {
-    // const ret = registerShortcut('CommandOrControl+J', (selectedText: string) => {
-    const selectedText = 'ahihihi'
-
+  const ret = registerShortcut('CommandOrControl+J', (selectedText: string) => {
     if (!windowManager.isQuickAskWindowVisible()) {
       windowManager.minimizeMainWindow()
       windowManager.showQuickAskWindow()
-      windowManager.mainWindow?.webContents.send(
+      windowManager._quickAskWindow?.webContents.send(
         AppEvent.onSelectedText,
         selectedText
       )
-
-      log(`NamH Selected Text: ${selectedText}`)
     } else {
       windowManager.minimizeQuickAskWindow()
     }
