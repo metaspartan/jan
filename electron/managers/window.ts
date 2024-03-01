@@ -14,7 +14,9 @@ class WindowManager {
    * @param {Electron.BrowserWindowConstructorOptions} options - The options to create the window with.
    * @returns The created window instance.
    */
-  createMainWindow(options?: Electron.BrowserWindowConstructorOptions | undefined) {
+  createMainWindow(
+    options?: Electron.BrowserWindowConstructorOptions | undefined
+  ) {
     this.mainWindow = new BrowserWindow({
       width: 1200,
       minWidth: 1200,
@@ -61,21 +63,32 @@ class WindowManager {
 
   createQuickAskWindow(preloadPath: string, startUrl: string): void {
     this._quickAskWindow = new BrowserWindow({
-      width: 560,
+      width: 350,
       height: 60,
       transparent: true,
       frame: false,
       type: 'panel',
-      resizable: true,
+      resizable: false,
       webPreferences: {
         nodeIntegration: true,
         preload: preloadPath,
-        webSecurity: false,
+        contextIsolation: true,
       },
     })
 
     this._quickAskWindow.loadURL(startUrl)
+    this._quickAskWindow.on('blur', () => {
+      this.minimizeQuickAskWindow()
+    })
     this.minimizeQuickAskWindow()
+  }
+
+  expandQuickAskWindow(): void {
+    this._quickAskWindow?.setSize(556, 300)
+  }
+
+  shrinkQuickAskWindow(): void {
+    this._quickAskWindow?.setSize(350, 60)
   }
 
   cleanUp(): void {

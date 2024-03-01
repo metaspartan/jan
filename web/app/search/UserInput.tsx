@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 
+import { Button } from '@janhq/uikit'
+
+import { Send } from 'lucide-react'
+
 import LogoMark from '@/containers/Brand/Logo/Mark'
 
 const UserInput: React.FC = () => {
@@ -19,6 +23,7 @@ const UserInput: React.FC = () => {
     }
 
     const handleClickOutside = (event: MouseEvent) => {
+      console.log(`NamH - handleClickOutside - event: `, event)
       // TODO: FIX this, not working for now
       // if (formRef.current && !formRef.current.contains(event.target)) {
       // window.core?.api?.minimizeQuickAsk()
@@ -74,22 +79,22 @@ const UserInput: React.FC = () => {
   return (
     <form
       ref={formRef}
-      className="flex h-full w-full  items-start justify-center"
+      className="flex h-full w-full items-center justify-center px-4"
       onSubmit={onSubmit}
     >
-      <div className="mx-4 flex h-full w-full items-center justify-start gap-4">
+      <div className="flex h-full w-full items-center gap-4">
         <LogoMark width={28} height={28} className="mx-auto" />
         <input
           ref={inputRef}
-          className="flex-1 bg-transparent font-bold focus:outline-none"
+          className="flex-1 font-bold focus:outline-none"
           type="text"
           value={inputValue}
           onChange={handleChange}
-          placeholder="How can I help you?"
+          placeholder="Ask me anything"
         />
-        <button type="submit" className="hidden">
-          Submit
-        </button>
+        <Button type="submit">
+          <Send size={16} />
+        </Button>
       </div>
     </form>
   )

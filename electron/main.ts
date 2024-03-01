@@ -36,16 +36,7 @@ app
   .then(setupMenu)
   .then(handleIPCs)
   .then(handleAppUpdates)
-  .then(() => {
-    // creating quick ask window
-    // TODO: move to another function
-    const preloadPath = join(__dirname, 'preload.js')
-    const startUrl = app.isPackaged
-      ? `file://${join(__dirname, '..', 'renderer', 'index.html')}`
-      : 'http://localhost:3000/search'
-
-    windowManager.createQuickAskWindow(preloadPath, startUrl)
-  })
+  .then(createQuickAskWindow)
   .then(createMainWindow)
   .then(() => {
     app.on('activate', () => {
@@ -68,6 +59,15 @@ app.once('quit', () => {
   cleanUpAndQuit()
 })
 
+function createQuickAskWindow() {
+  const preloadPath = join(__dirname, 'preload.js')
+  const startUrl = app.isPackaged
+    ? `file://${join(__dirname, '..', 'renderer', 'index.html')}`
+    : 'http://localhost:3000/search'
+
+  windowManager.createQuickAskWindow(preloadPath, startUrl)
+}
+
 function createMainWindow() {
   /* Create main window */
   const mainWindow = windowManager.createMainWindow({
@@ -85,10 +85,6 @@ function createMainWindow() {
   /* Load frontend app to the window */
   mainWindow.loadURL(startURL)
   windowManager.minimizeMainWindow()
-  // mainWindow.once('ready-to-show', () => mainWindow?.show())
-  mainWindow.on('closed', () => {
-    if (process.platform !== 'darwin') app.quit()
-  })
 
   /* Open external links in the default browser */
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -101,9 +97,10 @@ function createMainWindow() {
   log(`Version: ${app.getVersion()}`)
 }
 
-const registerGlobalShortcuts = () => {
+function registerGlobalShortcuts() {
   const ret = globalShortcut.register('Ctrl+Space', () => {
     if (!windowManager.isQuickAskWindowVisible()) {
+      windowManager.minimizeMainWindow()
       windowManager.showQuickAskWindow()
     } else {
       windowManager.minimizeQuickAskWindow()

@@ -15,6 +15,9 @@ export enum NativeRoute {
 
   minimizeMainWindow = 'minimizeMainWindow',
   showMainWindow = 'showMainWindow',
+
+  quickAskExpandMode = 'quickAskExpandMode',
+  quickAskNormalMode = 'quickAskNormalMode',
 }
 
 /**

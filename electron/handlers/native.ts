@@ -126,4 +126,14 @@ export function handleAppIPCs() {
     NativeRoute.showMainWindow,
     async (): Promise<void> => windowManager.showMainWindow()
   )
+
+  ipcMain.handle(
+    NativeRoute.quickAskExpandMode,
+    async (): Promise<void> => windowManager.expandQuickAskWindow()
+  )
+
+  ipcMain.handle(
+    NativeRoute.quickAskNormalMode,
+    async (): Promise<void> => windowManager.shrinkQuickAskWindow()
+  )
 }
