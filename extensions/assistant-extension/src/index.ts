@@ -10,6 +10,7 @@ import {
   executeOnMain,
   AssistantExtension,
   AssistantEvent,
+  ChatCompletionMessageContentType,
 } from '@janhq/core'
 
 export default class JanAssistantExtension extends AssistantExtension {
@@ -78,7 +79,8 @@ export default class JanAssistantExtension extends AssistantExtension {
       latestMessage &&
       latestMessage.content &&
       typeof latestMessage.content !== 'string' &&
-      latestMessage.content.length > 1
+      latestMessage.content.length > 1 &&
+      latestMessage.content[0].type === ChatCompletionMessageContentType.Doc
     ) {
       const docFile = latestMessage.content[1]?.doc_url?.url
       if (docFile) {

@@ -30,7 +30,7 @@ import {
   fileUploadAtom,
 } from '@/containers/Providers/Jotai'
 
-import { getBase64 } from '@/utils/base64'
+import { compressImage, getBase64 } from '@/utils/base64'
 import { toRuntimeParams, toSettingParams } from '@/utils/modelParam'
 
 import { loadModelErrorAtom, useActiveModel } from './useActiveModel'
@@ -170,7 +170,9 @@ export default function useSendChatMessage() {
     setEditPrompt('')
 
     const base64Blob = fileUpload[0]
-      ? await getBase64(fileUpload[0].file).then()
+      ? await getBase64(fileUpload[0].file).then((img) =>
+          compressImage(img, 336)
+        )
       : undefined
 
     const fileContentType = fileUpload[0]?.type
@@ -243,8 +245,8 @@ export default function useSendChatMessage() {
 
       // Add support for vision model with tool retrieval enabled
       if (
-        modelRequest.settings.visionModel &&
-        !modelRequest.settings.textModel
+        modelRequest.settings.vision_model &&
+        !modelRequest.settings.text_model
       ) {
         modelRequest.engine = modelRequest.proxy_model
       }
